@@ -1,0 +1,7 @@
+{
+  "name": "Aer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
