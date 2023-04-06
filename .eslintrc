@@ -1,0 +1,15 @@
+{
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
+  },
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": ["@okidoo/eslint-config"]
+}
+//https://stackoverflow.com/questions/57032522/eslint-complains-about-typescripts-path-aliasing

@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonicModule]
 })
-export class AppComponent {}
+export class LayoutComponent {}

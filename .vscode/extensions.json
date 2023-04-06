@@ -1,5 +1,31 @@
 {
-    "recommendations": [
-      "ionic.ionic"
-    ]
+  "recommendations": [
+    "ionic.ionic",
+    "coenraads.bracket-pair-colorizer",
+    "oderwat.indent-rainbow",
+    "mikestead.dotenv",
+    "pkief.material-icon-theme",
+    "eamodio.gitlens",
+    "rbbit.typescript-hero",
+    "dbaeumer.vscode-eslint",
+    "mathcale.theme-dracula-refined",
+    "xabikos.javascriptsnippets",
+    "christian-kohler.path-intellisense",
+    "wayou.vscode-todo-highlight",
+    "shardulm94.trailing-spaces",
+    "foxundermoon.shell-format",
+    "42crunch.vscode-openapi",
+    "formulahendry.auto-rename-tag",
+    "exiasr.hadolint",
+    "mhutchie.git-graph",
+    "esbenp.prettier-vscode",
+    "Angular.ng-template",
+    "bradlc.vscode-tailwindcss",
+    "heybourn.headwind",
+    "natewallace.angular2-inline",
+    "atlassian.atlascode",
+    "rvest.vs-code-prettier-eslint",
+    "jannisx11.batch-rename-extension",
+    "ritwickdey.liveserver"
+  ]
 }

@@ -1,0 +1,104 @@
+{
+  "files.exclude": {
+    "**/minio-data/**": true,
+    // "**/node_modules/**": true,
+    // "**/dist/**": true,
+    "**/.angular/**": true,
+    "**/.pnpm-store/**": true,
+    "**/generators/**": true,
+    "documentation.json": true
+  },
+  "files.watcherExclude": {
+    "**/minio-data/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.angular/**": true,
+    "**/.pnpm-store/**": true,
+    "**/generators/**": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/minio-data/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.angular/**": true,
+    "**/.pnpm-store/**": true,
+    "**/generators/**": true,
+    "**/dist": true,
+    "package-lock.json": true
+  },
+  "explorer.compactFolders": false,
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.quoteStyle": "double",
+  "typescriptHero.imports.stringQuoteStyle": "\"",
+  "eslint.alwaysShowStatus": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "editor.detectIndentation": false,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Dracula Refined",
+  "editor.tabSize": 2,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "todohighlight.keywords": ["LOGIC_CHECK:"],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#f08b9f",
+    "activityBar.activeBorder": "#a53a5b",
+    "activityBar.background": "#f08b9f",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#d0f8c7",
+    "activityBarBadge.foreground": "#15202b",
+    "statusBar.background": "#ea5e7a",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#e43155",
+    "titleBar.activeBackground": "#ea5e7a",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#ea5e7a99",
+    "titleBar.inactiveForeground": "#15202b99",
+    "sash.hoverBorder": "#f08b9f",
+    "statusBarItem.remoteBackground": "#ea5e7a",
+    "statusBarItem.remoteForeground": "#15202b",
+    "commandCenter.border": "#15202b99"
+  },
+  "peacock.remoteColor": "#0f172a",
+  "peacock.color": "#ea5e7a",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "angular.enable-strict-mode-prompt": true,
+  "files.associations": {
+    "*.scss": "tailwindcss"
+  },
+  "angular.log": "verbose",
+  "liveServer.settings.root": "./dist/torque-web",
+  "terminal.integrated.fontFamily": "MesloLGS NF"
+}
