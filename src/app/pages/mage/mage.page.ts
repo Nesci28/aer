@@ -1,20 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { IonicModule } from "@ionic/angular";
 
 @Component({
-  selector: 'app-mage',
-  templateUrl: './mage.page.html',
-  styleUrls: ['./mage.page.scss'],
+  selector: "app-mage",
+  templateUrl: "./mage.page.html",
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule],
 })
-export class MagePage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class MagePage {}

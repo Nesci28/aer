@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { LayoutComponent } from './layout.component';
+import { Routes } from "@angular/router";
+
+import { LayoutComponent } from "./layout.component";
 
 export const routes: Routes = [
   {
@@ -8,21 +8,42 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: 'mage',
-        loadComponent: () => import('./pages/mage/mage.page').then( m => m.MagePage)
+        path: "",
+        pathMatch: "full",
+        redirectTo: "nemesis",
       },
       {
-        path: 'market',
-        loadComponent: () => import('./pages/market/market.page').then( m => m.MarketPage)
+        path: "mage",
+        loadComponent: () => {
+          return import("./pages/mage/mage.page").then((m) => {
+            return m.MagePage;
+          });
+        },
       },
       {
-        path: 'nemesis',
-        loadComponent: () => import('./pages/nemesis/nemesis.page').then( m => m.NemesisPage)
+        path: "market",
+        loadComponent: () => {
+          return import("./pages/market/market.page").then((m) => {
+            return m.MarketPage;
+          });
+        },
       },
       {
-        path: 'turn-order',
-        loadComponent: () => import('./pages/turn-order/turn-order.page').then( m => m.TurnOrderPage)
+        path: "nemesis",
+        loadComponent: () => {
+          return import("./pages/nemesis/nemesis.page").then((m) => {
+            return m.NemesisPage;
+          });
+        },
       },
-    ]
+      {
+        path: "turn-order",
+        loadComponent: () => {
+          return import("./pages/turn-order/turn-order.page").then((m) => {
+            return m.TurnOrderPage;
+          });
+        },
+      },
+    ],
   },
 ];

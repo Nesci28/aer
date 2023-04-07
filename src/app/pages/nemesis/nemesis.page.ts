@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import { IonicModule } from "@ionic/angular";
 
 @Component({
-  selector: 'app-nemesis',
-  templateUrl: './nemesis.page.html',
-  styleUrls: ['./nemesis.page.scss'],
+  selector: "app-nemesis",
+  templateUrl: "./nemesis.page.html",
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
-export class NemesisPage implements OnInit {
+export class NemesisPage {
+  public nbrOfPlayer = new FormControl(2, Validators.required);
 
-  constructor() { }
-
-  ngOnInit() {
+  public generate(): void {
+    console.log("generate :>> ");
   }
-
 }

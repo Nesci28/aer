@@ -1,20 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { IonicModule } from "@ionic/angular";
 
 @Component({
-  selector: 'app-market',
-  templateUrl: './market.page.html',
-  styleUrls: ['./market.page.scss'],
+  selector: "app-market",
+  templateUrl: "./market.page.html",
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule],
 })
-export class MarketPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class MarketPage {}

@@ -1,16 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>nemesis</ion-title>
+    <ion-title>Nemesis</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <p>nemesis works!</p>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <p>test</p>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
+    <div>
+      <p>Nbr of players</p>
+      <ion-list class="flex">
+        <ion-select
+          aria-label="Player"
+          interface="popover"
+          placeholder="Nbr of players"
+          class="!w-full !max-w-full"
+          [formControl]="nbrOfPlayer"
+        >
+          <ion-select-option [value]="1">1</ion-select-option>
+          <ion-select-option [value]="2">2</ion-select-option>
+          <ion-select-option [value]="3">3</ion-select-option>
+          <ion-select-option [value]="4">4</ion-select-option>
+        </ion-select>
+      </ion-list>
+    </div>
+    <ion-button (click)="generate()"> Generate </ion-button>
   </ion-fab>
 </ion-content>
-

@@ -1,20 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { IonicModule } from "@ionic/angular";
 
 @Component({
-  selector: 'app-turn-order',
-  templateUrl: './turn-order.page.html',
-  styleUrls: ['./turn-order.page.scss'],
+  selector: "app-turn-order",
+  templateUrl: "./turn-order.page.html",
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule],
 })
-export class TurnOrderPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class TurnOrderPage {}
