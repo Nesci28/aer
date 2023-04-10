@@ -5,5 +5,75 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>turn-order works!</p>
+  <div *ngIf="histories.length">
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let history of histories">
+            <ion-label class="col-span-3"
+              >Player: {{ history.label }}</ion-label
+            >
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="pb-10"></div>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
+    <div *ngIf="showNbrOfPlayers">
+      <p>Nbr of players</p>
+      <ion-list class="flex">
+        <ion-select
+          aria-label="Player"
+          interface="popover"
+          placeholder="Nbr of players"
+          class="!w-full !max-w-full"
+          [formControl]="nbrOfPlayer"
+        >
+          <ion-select-option [value]="1">1</ion-select-option>
+          <ion-select-option [value]="2">2</ion-select-option>
+          <ion-select-option [value]="3">3</ion-select-option>
+          <ion-select-option [value]="4">4</ion-select-option>
+        </ion-select>
+      </ion-list>
+    </div>
+    <ion-button *ngIf="showNbrOfPlayers" (click)="generate()">
+      Start
+    </ion-button>
+
+    <div *ngIf="!showNbrOfPlayers" class="flex justify-between w-full">
+      <ion-button id="open-modal" expand="block" color="warning">
+        Reset
+      </ion-button>
+      <ion-button (click)="generate()"> Next turn </ion-button>
+      <ion-modal
+        trigger="open-modal"
+        [initialBreakpoint]="0.25"
+        [breakpoints]="[0, 0.25, 0.5, 0.75]"
+        handleBehavior="cycle"
+        #modal
+      >
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Reset?</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="modal.dismiss()">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <div class="flex justify-center pb-3 ion-margin-top">
+              <ion-label>Are you sure you want to reset the history?</ion-label>
+            </div>
+            <div class="flex justify-around">
+              <ion-button color="danger" (click)="reset()"> Yes </ion-button>
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </div>
+  </ion-fab>
 </ion-content>

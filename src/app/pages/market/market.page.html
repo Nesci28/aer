@@ -1,9 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>market</ion-title>
+    <ion-title>mage</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>turn-order works!</p>
+  <div *ngIf="cards.length">
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let card of cards">
+            <div class="grid w-full grid-cols-6 gap-3">
+              <ion-label class="col-span-3"
+                >{{ card.name | localize }}</ion-label
+              >
+              <ion-label class="col-span-2"
+                >{{ card.type | localize }}</ion-label
+              >
+              <ion-label class="col-span-1">{{ card.cost }}</ion-label>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="pb-10"></div>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
+    <ion-button (click)="generate()"> Generate </ion-button>
+  </ion-fab>
 </ion-content>

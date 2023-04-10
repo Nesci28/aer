@@ -5,7 +5,44 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <p>test</p>
+  <div *ngIf="nemesis && nemesisCards.length">
+    <ion-card color="danger">
+      <ion-card-header>
+        <ion-card-title>{{ nemesis.name | localize }}</ion-card-title>
+        <ion-card-subtitle
+          >{{ nemesis.additionalInfo | localize }}</ion-card-subtitle
+        >
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="flex justify-between">
+          <p>Difficulty: {{ nemesis.difficulty }}</p>
+          <p>Expansion: {{ nemesis.expansion }}</p>
+          <p>Health: {{ nemesis.health }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let nemesisCard of nemesisCards">
+            <div class="grid w-full grid-cols-6 gap-3">
+              <ion-label class="col-span-3"
+                >{{ nemesisCard.name | localize }}</ion-label
+              >
+              <ion-label class="col-span-2"
+                >{{ nemesisCard.type | localize }}</ion-label
+              >
+              <ion-label class="col-span-1">{{ nemesisCard.tier }}</ion-label>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="pb-10"></div>
+  </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
     <div>
