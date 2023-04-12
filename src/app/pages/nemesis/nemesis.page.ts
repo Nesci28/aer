@@ -1,16 +1,17 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Component } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { shuffle } from "lodash";
 
 import { nemesisText } from "../../../i18n/nemesis.i18n";
 import { nemesisCardText } from "../../../i18n/nemesis-card.i18n";
 import { Card } from "../../../interfaces/card.interface";
 import { Nemesis } from "../../../interfaces/nemesis.interface";
-import { AppService } from "../../app.service";
+import { BasePage } from "../../base/base.page";
 import { LocalizePipe } from "../../pipes/localize.pipe";
+import { nemesisPageText } from "./nemesis.i18n";
 
 @UntilDestroy()
 @Component({
@@ -19,20 +20,12 @@ import { LocalizePipe } from "../../pipes/localize.pipe";
   standalone: true,
   imports: [IonicModule, CommonModule, ReactiveFormsModule, LocalizePipe],
 })
-export class NemesisPage implements OnInit {
-  public nbrOfPlayer = new FormControl(2, Validators.required);
+export class NemesisPage extends BasePage {
+  public nemesisPageText = nemesisPageText;
 
   public nemesis: Nemesis | undefined;
 
   public nemesisCards: Card[] = [];
-
-  constructor(private readonly appService: AppService) {}
-
-  public ngOnInit(): void {
-    this.appService.nbrOfPlayers$.pipe(untilDestroyed(this)).subscribe((x) => {
-      this.nbrOfPlayer.setValue(x);
-    });
-  }
 
   public generate(): void {
     const nemesis = shuffle(nemesisText)[0];

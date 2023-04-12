@@ -1,10 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>mage</ion-title>
+    <ion-title>{{ magePageText.mage | localize }}</ion-title>
+    <div class="flex justify-end w-full">
+      <ion-icon
+        name="cog-outline"
+        class="text-3xl"
+        id="open-modal-mage"
+        expand="block"
+      ></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <div *ngIf="mages.length">
     <ion-card *ngFor="let mage of mages">
       <ion-card-header>
@@ -19,27 +27,69 @@
       </ion-card-content>
     </ion-card>
 
-    <div class="pb-10"></div>
+    <div class="pb-14"></div>
   </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
-    <div>
-      <p>Nbr of players</p>
-      <ion-list class="flex">
-        <ion-select
-          aria-label="Player"
-          interface="popover"
-          placeholder="Nbr of players"
-          class="!w-full !max-w-full"
-          [formControl]="nbrOfPlayer"
-        >
-          <ion-select-option [value]="1">1</ion-select-option>
-          <ion-select-option [value]="2">2</ion-select-option>
-          <ion-select-option [value]="3">3</ion-select-option>
-          <ion-select-option [value]="4">4</ion-select-option>
-        </ion-select>
-      </ion-list>
-    </div>
-    <ion-button (click)="generate()"> Generate </ion-button>
+    <ion-button (click)="generate()">
+      {{ magePageText.generate | localize }}
+    </ion-button>
   </ion-fab>
+
+  <ion-modal
+    trigger="open-modal-mage"
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.5, 0.75, 1]"
+    handleBehavior="cycle"
+    #modal
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ magePageText.settings | localize }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()"
+              >{{ magePageText.close | localize }}</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="form">
+          <p>{{ magePageText.nbrOfPlayers | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Number of players"
+              interface="popover"
+              placeholder="Nbr of players"
+              class="!w-full !max-w-full"
+              formControlName="nbrOfPlayers"
+            >
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+              <ion-select-option [value]="4">4</ion-select-option>
+            </ion-select>
+          </ion-list>
+
+          <p>{{ magePageText.language | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Language"
+              interface="popover"
+              placeholder="Language"
+              class="!w-full !max-w-full"
+              formControlName="language"
+            >
+              <ion-select-option [value]="SupportedLanguageEnum.En"
+                >{{ magePageText.english | localize }}</ion-select-option
+              >
+              <ion-select-option [value]="SupportedLanguageEnum.Fr"
+                >{{ magePageText.french | localize }}</ion-select-option
+              >
+            </ion-select>
+          </ion-list>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

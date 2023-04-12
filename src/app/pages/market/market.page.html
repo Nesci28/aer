@@ -1,6 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>mage</ion-title>
+    <ion-title>{{ marketPageText.market | localize }}</ion-title>
+    <div class="flex justify-end w-full">
+      <ion-icon
+        name="cog-outline"
+        class="text-3xl"
+        id="open-modal-market"
+        expand="block"
+      ></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +16,7 @@
   <div *ngIf="cards.length">
     <ion-card>
       <ion-card-content>
-        <ion-list>
+        <ion-list [inset]="true">
           <ion-item *ngFor="let card of cards">
             <div class="grid w-full grid-cols-6 gap-3">
               <ion-label class="col-span-3"
@@ -28,6 +36,65 @@
   </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
-    <ion-button (click)="generate()"> Generate </ion-button>
+    <ion-button (click)="generate()">
+      {{ marketPageText.generate | localize }}
+    </ion-button>
   </ion-fab>
+
+  <ion-modal
+    trigger="open-modal-market"
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.5, 0.75, 1]"
+    handleBehavior="cycle"
+    #modal
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ marketPageText.settings | localize }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()"
+              >{{ marketPageText.close | localize }}</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="form">
+          <p>{{ marketPageText.nbrOfPlayers | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Number of players"
+              interface="popover"
+              placeholder="Nbr of players"
+              class="!w-full !max-w-full"
+              formControlName="nbrOfPlayers"
+            >
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+              <ion-select-option [value]="4">4</ion-select-option>
+            </ion-select>
+          </ion-list>
+
+          <p>{{ marketPageText.language | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Language"
+              interface="popover"
+              placeholder="Language"
+              class="!w-full !max-w-full"
+              formControlName="language"
+            >
+              <ion-select-option [value]="SupportedLanguageEnum.En"
+                >{{ marketPageText.english | localize }}</ion-select-option
+              >
+              <ion-select-option [value]="SupportedLanguageEnum.Fr"
+                >{{ marketPageText.french | localize }}</ion-select-option
+              >
+            </ion-select>
+          </ion-list>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

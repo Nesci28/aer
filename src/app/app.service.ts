@@ -7,13 +7,9 @@ import { SupportedLanguage } from "../interfaces/supported-language.enum";
   providedIn: "root",
 })
 export class AppService {
-  private languageBhv = new BehaviorSubject<SupportedLanguage>(
+  public language$ = new BehaviorSubject<SupportedLanguage>(
     SupportedLanguage.Fr,
   );
 
-  public language$ = this.languageBhv.asObservable();
-
-  private nbrOfPlayersBhv = new BehaviorSubject<number>(2);
-
-  public nbrOfPlayers$ = this.nbrOfPlayersBhv.asObservable();
+  public nbrOfPlayers$ = new BehaviorSubject<number>(2);
 }

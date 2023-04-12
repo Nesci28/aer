@@ -1,25 +1,49 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IonicModule, ModalController } from "@ionic/angular";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { Component } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import {
+  IonicModule,
+  ItemReorderEventDetail,
+  ModalController,
+} from "@ionic/angular";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { cloneDeep, shuffle } from "lodash";
 
 import { AppService } from "../../app.service";
+import { BasePage } from "../../base/base.page";
+import { IonCLickDirective } from "../../directives/click.directive";
+import { FreezePipe } from "../../pipes/freeze.pipe";
+import { LocalizePipe } from "../../pipes/localize.pipe";
+import { turnOrderPageText } from "./turn-order.i18n";
 
 @UntilDestroy()
 @Component({
   selector: "app-turn-order",
   templateUrl: "./turn-order.page.html",
   standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    ReactiveFormsModule,
+    LocalizePipe,
+    IonCLickDirective,
+    FreezePipe,
+  ],
 })
-export class TurnOrderPage implements OnInit {
-  public nbrOfPlayer = new FormControl(2, Validators.required);
+export class TurnOrderPage extends BasePage {
+  public turnOrderPageText = turnOrderPageText;
 
-  public showNbrOfPlayers = true;
+  public isStarted = false;
 
   public histories: { label: string }[] = [];
+
+  public isNextCardShowed = false;
+
+  public isDeckShowed = false;
+
+  public currentTurns: { label: string }[] = [];
+
+  public reverseCurrentTurns: { label: string }[] = [];
 
   private originalTurns: { label: string }[] = [
     { label: "1" },
@@ -28,24 +52,18 @@ export class TurnOrderPage implements OnInit {
     { label: "nemesis" },
   ];
 
-  private currentTurns: { label: string }[] = [];
-
   constructor(
-    private readonly appService: AppService,
+    appService: AppService,
     private readonly modalCtrl: ModalController,
-  ) {}
-
-  public ngOnInit(): void {
-    this.appService.nbrOfPlayers$.pipe(untilDestroyed(this)).subscribe((x) => {
-      this.nbrOfPlayer.setValue(x);
-    });
+  ) {
+    super(appService);
   }
 
   public generate(): void {
-    this.showNbrOfPlayers = false;
+    this.isStarted = true;
 
     if (this.originalTurns.length === 4) {
-      const nbrOfPlayers = this.nbrOfPlayer.value!;
+      const nbrOfPlayers = this.form.value.nbrOfPlayers!;
       if (nbrOfPlayers === 2) {
         this.originalTurns.push({ label: "1" }, { label: "2" });
       }
@@ -67,7 +85,7 @@ export class TurnOrderPage implements OnInit {
   }
 
   public reset(): void {
-    this.showNbrOfPlayers = true;
+    this.isStarted = true;
     this.histories.length = 0;
     this.originalTurns = [
       { label: "1" },
@@ -77,5 +95,31 @@ export class TurnOrderPage implements OnInit {
     ];
 
     this.modalCtrl.dismiss();
+  }
+
+  public checkNextCard(): void {
+    this.isDeckShowed = false;
+    this.isNextCardShowed = true;
+  }
+
+  public reorderDeck(): void {
+    this.reverseCurrentTurns = cloneDeep(this.currentTurns).reverse();
+    this.isNextCardShowed = false;
+    this.isDeckShowed = true;
+  }
+
+  public resetVariables(): void {
+    this.currentTurns = cloneDeep(this.reverseCurrentTurns).reverse();
+    this.isNextCardShowed = false;
+    this.isDeckShowed = false;
+  }
+
+  public handleReorder(evt: CustomEvent<ItemReorderEventDetail>): void {
+    const { from, to } = evt.detail;
+
+    const fromElement = this.reverseCurrentTurns.splice(from, 1)[0];
+    this.reverseCurrentTurns.splice(to, 0, fromElement);
+
+    evt.detail.complete();
   }
 }

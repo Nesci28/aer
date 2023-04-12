@@ -1,6 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>turn-order</ion-title>
+    <ion-title>{{ turnOrderPageText.turnOrder | localize }}</ion-title>
+    <div class="flex justify-end w-full">
+      <ion-icon
+        name="cog-outline"
+        class="text-3xl"
+        id="open-modal-settings"
+        expand="block"
+      ></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -8,11 +16,17 @@
   <div *ngIf="histories.length">
     <ion-card>
       <ion-card-content>
-        <ion-list>
+        <ion-list [inset]="true">
           <ion-item *ngFor="let history of histories">
-            <ion-label class="col-span-3"
-              >Player: {{ history.label }}</ion-label
-            >
+            <div class="grid w-full grid-cols-6 gap-3">
+              <ion-label class="col-span-5"
+                >{{ turnOrderPageText.player | localize }}: {{ history.label
+                }}</ion-label
+              >
+              <ion-label class="col-span-1"
+                >{{ currentTurns | freeze }}</ion-label
+              >
+            </div>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -21,59 +35,202 @@
     <div class="pb-10"></div>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
-    <div *ngIf="showNbrOfPlayers">
-      <p>Nbr of players</p>
-      <ion-list class="flex">
-        <ion-select
-          aria-label="Player"
-          interface="popover"
-          placeholder="Nbr of players"
-          class="!w-full !max-w-full"
-          [formControl]="nbrOfPlayer"
-        >
-          <ion-select-option [value]="1">1</ion-select-option>
-          <ion-select-option [value]="2">2</ion-select-option>
-          <ion-select-option [value]="3">3</ion-select-option>
-          <ion-select-option [value]="4">4</ion-select-option>
-        </ion-select>
-      </ion-list>
-    </div>
-    <ion-button *ngIf="showNbrOfPlayers" (click)="generate()">
-      Start
+  <ion-fab
+    *ngIf="!isStarted"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+    class="flex gap-2"
+  >
+    <ion-button (click)="generate()">
+      {{ turnOrderPageText.start | localize }}
     </ion-button>
+  </ion-fab>
 
-    <div *ngIf="!showNbrOfPlayers" class="flex justify-between w-full">
-      <ion-button id="open-modal" expand="block" color="warning">
-        Reset
+  <ion-fab
+    *ngIf="isStarted"
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+    class="flex w-full gap-2 pl-5"
+  >
+    <div class="flex justify-between w-full">
+      <div class="flex">
+        <ion-button id="open-modal-reset" expand="block" color="danger">
+          {{ turnOrderPageText.reset | localize }}
+        </ion-button>
+        <ion-button id="open-modal-deck" expand="block" color="warning">
+          {{ turnOrderPageText.deck | localize }}
+        </ion-button>
+      </div>
+      <ion-button appIonClick (debounceClick)="generate()" [debounceTime]="100">
+        {{ turnOrderPageText.nextTurn | localize }}
       </ion-button>
-      <ion-button (click)="generate()"> Next turn </ion-button>
+
       <ion-modal
-        trigger="open-modal"
-        [initialBreakpoint]="0.25"
-        [breakpoints]="[0, 0.25, 0.5, 0.75]"
+        trigger="open-modal-deck"
+        [initialBreakpoint]="0.5"
+        [breakpoints]="[0.5, 0.75, 1]"
         handleBehavior="cycle"
-        #modal
+        #modalDeck
+        (willDismiss)="resetVariables()"
       >
         <ng-template>
           <ion-header>
             <ion-toolbar>
-              <ion-title>Reset?</ion-title>
+              <ion-title>{{ turnOrderPageText.deck | localize }}</ion-title>
               <ion-buttons slot="end">
-                <ion-button (click)="modal.dismiss()">Close</ion-button>
+                <ion-button (click)="modalDeck.dismiss()"
+                  >{{ turnOrderPageText.close | localize }}</ion-button
+                >
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <div class="flex justify-around">
+              <ion-button (click)="reorderDeck()">
+                {{ turnOrderPageText.reorder | localize }}
+              </ion-button>
+              <ion-button
+                appIonClick
+                (debounceClick)="checkNextCard()"
+                [debounceTime]="100"
+              >
+                {{ turnOrderPageText.nextCard | localize }}
+              </ion-button>
+            </div>
+
+            <div *ngIf="isNextCardShowed">
+              <ion-card>
+                <ion-card-content>
+                  <ion-list [inset]="true">
+                    <ion-item>
+                      <ion-label class="col-span-3"
+                        >{{ turnOrderPageText.player | localize }}: {{
+                        currentTurns[currentTurns.length - 1].label
+                        }}</ion-label
+                      >
+                    </ion-item>
+                  </ion-list>
+                </ion-card-content>
+              </ion-card>
+            </div>
+
+            <div *ngIf="isDeckShowed">
+              <ion-card>
+                <ion-card-content>
+                  <ion-list [inset]="true">
+                    <ion-reorder-group
+                      [disabled]="false"
+                      (ionItemReorder)="handleReorder($any($event))"
+                    >
+                      <ion-item
+                        *ngFor="let reverseCurrentTurn of reverseCurrentTurns"
+                      >
+                        <ion-label
+                          >{{ turnOrderPageText.player | localize }}: {{
+                          reverseCurrentTurn.label }}</ion-label
+                        >
+                        <ion-reorder slot="end"></ion-reorder>
+                      </ion-item>
+                    </ion-reorder-group>
+                  </ion-list>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <ion-modal
+        trigger="open-modal-reset"
+        [initialBreakpoint]="0.5"
+        [breakpoints]="[0.5, 0.75, 1]"
+        handleBehavior="cycle"
+        #modalReset
+      >
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>{{ turnOrderPageText.reset | localize }}?</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="modalReset.dismiss()"
+                  >{{ turnOrderPageText.close | localize }}</ion-button
+                >
               </ion-buttons>
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
             <div class="flex justify-center pb-3 ion-margin-top">
-              <ion-label>Are you sure you want to reset the history?</ion-label>
+              <ion-label
+                >{{ turnOrderPageText.areYouSure | localize }}?</ion-label
+              >
             </div>
             <div class="flex justify-around">
-              <ion-button color="danger" (click)="reset()"> Yes </ion-button>
+              <ion-button color="danger" (click)="reset()">
+                {{ turnOrderPageText.yes | localize }}
+              </ion-button>
             </div>
           </ion-content>
         </ng-template>
       </ion-modal>
     </div>
   </ion-fab>
+
+  <ion-modal
+    trigger="open-modal-settings"
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.5, 0.75, 1]"
+    handleBehavior="cycle"
+    #modal
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ turnOrderPageText.settings | localize }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()"
+              >{{ turnOrderPageText.close | localize }}</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="form">
+          <p>{{ turnOrderPageText.nbrOfPlayers | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Number of players"
+              interface="popover"
+              placeholder="Nbr of players"
+              class="!w-full !max-w-full"
+              formControlName="nbrOfPlayers"
+            >
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+              <ion-select-option [value]="4">4</ion-select-option>
+            </ion-select>
+          </ion-list>
+
+          <p>{{ turnOrderPageText.language | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Language"
+              interface="popover"
+              placeholder="Language"
+              class="!w-full !max-w-full"
+              formControlName="language"
+            >
+              <ion-select-option [value]="SupportedLanguageEnum.En"
+                >{{ turnOrderPageText.english | localize }}</ion-select-option
+              >
+              <ion-select-option [value]="SupportedLanguageEnum.Fr"
+                >{{ turnOrderPageText.french | localize }}</ion-select-option
+              >
+            </ion-select>
+          </ion-list>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

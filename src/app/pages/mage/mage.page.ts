@@ -1,14 +1,15 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { shuffle } from "lodash";
 
 import { mageText } from "../../../i18n/mage.i18n";
 import { Mage } from "../../../interfaces/mage.interface";
-import { AppService } from "../../app.service";
+import { BasePage } from "../../base/base.page";
 import { LocalizePipe } from "../../pipes/localize.pipe";
+import { magePageText } from "./mage.i18n";
 
 @UntilDestroy()
 @Component({
@@ -17,21 +18,13 @@ import { LocalizePipe } from "../../pipes/localize.pipe";
   standalone: true,
   imports: [IonicModule, CommonModule, ReactiveFormsModule, LocalizePipe],
 })
-export class MagePage implements OnInit {
-  public nbrOfPlayer = new FormControl(2, Validators.required);
+export class MagePage extends BasePage implements OnInit {
+  public magePageText = magePageText;
 
   public mages: Mage[] = [];
 
-  constructor(private readonly appService: AppService) {}
-
-  public ngOnInit(): void {
-    this.appService.nbrOfPlayers$.pipe(untilDestroyed(this)).subscribe((x) => {
-      this.nbrOfPlayer.setValue(x);
-    });
-  }
-
   public generate(): void {
-    const mages = shuffle(mageText).splice(0, this.nbrOfPlayer.value!);
+    const mages = shuffle(mageText).splice(0, this.form.value.nbrOfPlayers!);
     this.mages = mages;
   }
 }

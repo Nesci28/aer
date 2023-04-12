@@ -22,7 +22,7 @@ export const mageCardSpellText: Card[] = [
   {
     type: spell,
     expansion: "AE",
-    name: TranslatableTextUtil.build("", "Mise à feu"),
+    name: TranslatableTextUtil.build("Ignite", "Mise à feu"),
     id: "Ignite",
     cost: 4,
     effect: TranslatableTextUtil.build(

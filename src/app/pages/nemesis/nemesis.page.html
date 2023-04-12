@@ -1,6 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Nemesis</ion-title>
+    <ion-title>{{ nemesisPageText.nemesis | localize }}</ion-title>
+    <div class="flex justify-end w-full">
+      <ion-icon
+        name="cog-outline"
+        class="text-3xl"
+        id="open-modal-nemesis"
+        expand="block"
+      ></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -16,16 +24,21 @@
 
       <ion-card-content>
         <div class="flex justify-between">
-          <p>Difficulty: {{ nemesis.difficulty }}</p>
-          <p>Expansion: {{ nemesis.expansion }}</p>
-          <p>Health: {{ nemesis.health }}</p>
+          <p>
+            {{ nemesisPageText.difficulty | localize }}: {{ nemesis.difficulty
+            }}
+          </p>
+          <p>
+            {{ nemesisPageText.expansion| localize }}: {{ nemesis.expansion }}
+          </p>
+          <p>{{ nemesisPageText.health | localize }}: {{ nemesis.health }}</p>
         </div>
       </ion-card-content>
     </ion-card>
 
     <ion-card>
       <ion-card-content>
-        <ion-list>
+        <ion-list [inset]="true">
           <ion-item *ngFor="let nemesisCard of nemesisCards">
             <div class="grid w-full grid-cols-6 gap-3">
               <ion-label class="col-span-3"
@@ -45,23 +58,65 @@
   </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="flex gap-2">
-    <div>
-      <p>Nbr of players</p>
-      <ion-list class="flex">
-        <ion-select
-          aria-label="Player"
-          interface="popover"
-          placeholder="Nbr of players"
-          class="!w-full !max-w-full"
-          [formControl]="nbrOfPlayer"
-        >
-          <ion-select-option [value]="1">1</ion-select-option>
-          <ion-select-option [value]="2">2</ion-select-option>
-          <ion-select-option [value]="3">3</ion-select-option>
-          <ion-select-option [value]="4">4</ion-select-option>
-        </ion-select>
-      </ion-list>
-    </div>
-    <ion-button (click)="generate()"> Generate </ion-button>
+    <ion-button (click)="generate()">
+      {{ nemesisPageText.generate | localize }}
+    </ion-button>
   </ion-fab>
+
+  <ion-modal
+    trigger="open-modal-nemesis"
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.5, 0.75, 1]"
+    handleBehavior="cycle"
+    #modal
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ nemesisPageText.settings | localize }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()"
+              >{{ nemesisPageText.close | localize }}</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="form">
+          <p>{{ nemesisPageText.nbrOfPlayers | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Number of players"
+              interface="popover"
+              placeholder="Nbr of players"
+              class="!w-full !max-w-full"
+              formControlName="nbrOfPlayers"
+            >
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+              <ion-select-option [value]="4">4</ion-select-option>
+            </ion-select>
+          </ion-list>
+
+          <p>{{ nemesisPageText.language | localize }}</p>
+          <ion-list class="flex">
+            <ion-select
+              aria-label="Language"
+              interface="popover"
+              placeholder="Language"
+              class="!w-full !max-w-full"
+              formControlName="language"
+            >
+              <ion-select-option [value]="SupportedLanguageEnum.En"
+                >{{ nemesisPageText.english | localize }}</ion-select-option
+              >
+              <ion-select-option [value]="SupportedLanguageEnum.Fr"
+                >{{ nemesisPageText.french | localize }}</ion-select-option
+              >
+            </ion-select>
+          </ion-list>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
